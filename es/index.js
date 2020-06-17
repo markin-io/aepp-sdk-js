@@ -44,7 +44,6 @@ import ContractCompilerAPI from './contract/compiler'
 import { Aepp, RpcAepp } from './ae/aepp'
 import { Wallet, RpcWallet } from './ae/wallet'
 import Oracle from './ae/oracle'
-import OracleNodeAPI from './oracle/node'
 import Selector from './account/selector'
 import Channel from './channel'
 import Universal from './ae/universal'
@@ -76,7 +75,6 @@ export {
   Node,
   NodePool,
   Oracle,
-  OracleNodeAPI,
   Selector,
   Transaction,
   TransactionValidator,

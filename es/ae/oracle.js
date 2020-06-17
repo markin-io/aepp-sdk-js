@@ -41,8 +41,8 @@ import { ORACLE_TTL, QUERY_FEE, QUERY_TTL, RESPONSE_TTL } from '../tx/builder/sc
  * @return {Promise<Object>} Oracle object
  */
 async function getOracleObject (oracleId) {
-  const oracle = await this.getOracle(oracleId)
-  const { oracleQueries: queries } = await this.getOracleQueries(oracleId)
+  const oracle = await this.api.getOracleByPubkey(oracleId)
+  const { oracleQueries: queries } = await this.api.getOracleQueriesByPubkey(oracleId)
   return {
     ...oracle,
     queries,
@@ -69,12 +69,12 @@ async function getOracleObject (oracleId) {
  * @return {Function} stopPolling - Stop polling function
  */
 async function pollForQueries (oracleId, onQuery, { interval = 5000 } = {}) {
-  const queries = (await this.getOracleQueries(oracleId)).oracleQueries || []
+  const queries = (await this.api.getOracleQueriesByPubkey(oracleId)).oracleQueries || []
   let quriesIds = queries.map(q => q.id)
   await onQuery(queries)
 
   async function pollQueries () {
-    const { oracleQueries: q } = await this.getOracleQueries(oracleId)
+    const { oracleQueries: q } = await this.api.getOracleQueriesByPubkey(oracleId)
     const newQueries = q.filter(({ id }) => !quriesIds.includes(id))
     if (newQueries.length) {
       quriesIds = [...quriesIds, ...newQueries.map(a => a.id)]
@@ -96,7 +96,7 @@ async function pollForQueries (oracleId, onQuery, { interval = 5000 } = {}) {
  * @return {Promise<Object>} OracleQuery object
  */
 async function getQueryObject (oracleId, queryId) {
-  const q = await this.getOracleQuery(oracleId, queryId)
+  const q = await this.api.getOracleQueryByPubkeyAndQueryId(oracleId, queryId)
   return {
     ...q,
     decodedQuery: decodeBase64Check(q.query.slice(3)).toString(),
@@ -126,7 +126,7 @@ export async function pollForQueryResponse (oracleId, queryId, { attempts = 20, 
     await new Promise(resolve => setTimeout(resolve, duration))
   }
   async function probe (left) {
-    const query = await this.getOracleQuery(oracleId, queryId)
+    const query = await this.api.getOracleQueryByPubkeyAndQueryId(oracleId, queryId)
     if (query.response !== emptyResponse) {
       return { response: query.response, decode: () => decodeBase64Check(query.response.slice(3)) }
     }
