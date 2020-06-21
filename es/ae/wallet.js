@@ -25,9 +25,9 @@
 import * as R from 'ramda'
 
 import Ae from './'
-import Account from '../account'
+import AccountBase from '../account/base'
 import ContractBase from '../contract'
-import Accounts from '../accounts'
+import AccountMultiple from '../account/multiple'
 import Chain from '../chain/node'
 import Rpc from '../rpc/server'
 import Tx from '../tx/tx'
@@ -41,7 +41,7 @@ import Aens from './aens'
 const contains = R.flip(R.contains)
 const isTxMethod = contains(TxBase.compose.deepConfiguration.Ae.methods)
 const isChainMethod = contains(Chain.compose.deepConfiguration.Ae.methods)
-const isAccountMethod = contains(Account.compose.deepConfiguration.Ae.methods)
+const isAccountMethod = contains(AccountBase.compose.deepConfiguration.Ae.methods)
 const isContractMethod = contains(ContractBase.compose.deepConfiguration.Contract.methods)
 const handlers = [
   { pred: isTxMethod, handler: 'onTx', error: 'Creating transaction [{}] rejected' },
@@ -97,7 +97,7 @@ function onContract () {
 
 async function rpcSign ({ params, session }) {
   if (await this.onAccount('sign', params, session)) {
-    return this.signWith(session.address, params[0])
+    return this.sign(params[0], { onAccount: session.address })
   } else {
     return Promise.reject(Error('Signing rejected'))
   }
@@ -135,7 +135,7 @@ async function rpcAddress ({ params, session }) {
   onContract: confirm
 })
  */
-export const Wallet = Ae.compose(Accounts, Chain, Tx, Contract, GeneralizeAccount, Rpc, {
+export const Wallet = Ae.compose(AccountMultiple, Chain, Tx, Contract, GeneralizeAccount, Rpc, {
   init ({ onTx = this.onTx, onChain = this.onChain, onAccount = this.onAccount, onContract = this.onContract }, { stamp }) {
     this.onTx = onTx
     this.onChain = onChain

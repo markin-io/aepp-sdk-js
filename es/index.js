@@ -34,8 +34,8 @@ import NodePool from './node-pool'
 import Tx from './tx'
 import Transaction from './tx/tx'
 import TransactionValidator from './tx/validator'
-import Account from './account'
-import Accounts from './accounts'
+import AccountBase from './account/base'
+import AccountMultiple from './account/multiple'
 import MemoryAccount from './account/memory'
 import Aens from './ae/aens'
 import Contract from './ae/contract'
@@ -45,15 +45,14 @@ import { Aepp, RpcAepp } from './ae/aepp'
 import { Wallet, RpcWallet } from './ae/wallet'
 import Oracle from './ae/oracle'
 import OracleNodeAPI from './oracle/node'
-import Selector from './account/selector'
 import Channel from './channel'
 import Universal from './ae/universal'
 import ContractACI from './contract/aci'
 
 export {
   AmountFormatter,
-  Account,
-  Accounts,
+  AccountBase,
+  AccountMultiple,
   Ae,
   Aens,
   Aepp,
@@ -77,7 +76,6 @@ export {
   NodePool,
   Oracle,
   OracleNodeAPI,
-  Selector,
   Transaction,
   TransactionValidator,
   Tx,
