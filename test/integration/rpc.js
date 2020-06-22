@@ -22,12 +22,7 @@ import BrowserWindowMessageConnection from '../../es/utils/aepp-wallet-communica
 import { generateKeyPair, verify } from '../../es/utils/crypto'
 import { decode } from '../../es/tx/builder/helpers'
 import { unpackTx } from '../../es/tx/builder'
-import {
-  getBrowserAPI,
-  getHandler,
-  isInIframe,
-  receive
-} from '../../es/utils/aepp-wallet-communication/helpers'
+import { getBrowserAPI, getHandler } from '../../es/utils/aepp-wallet-communication/helpers'
 import { METHODS, RPC_STATUS } from '../../es/utils/aepp-wallet-communication/schema'
 
 describe('Aepp<->Wallet', function () {
@@ -614,9 +609,6 @@ describe('Aepp<->Wallet', function () {
     })
   })
   describe('Rpc helpers', () => {
-    it('Receive invalid message', () => {
-      (!receive(() => true)(false)).should.be.equal(true)
-    })
     it('receive unknown method', async () => {
       (await getHandler({}, { method: 'hey' })()()).should.be.equal(true)
     })
