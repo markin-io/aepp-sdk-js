@@ -34,7 +34,7 @@ import Tx from '../tx/tx'
 import TxBase from '../tx'
 import Contract from './contract'
 import GeneralizeAccount from '../contract/ga'
-import { WalletRpc } from '../utils/aepp-wallet-communication/rpc/wallet-rpc'
+import WalletRpc from '../utils/aepp-wallet-communication/rpc/wallet-rpc'
 import Oracle from './oracle'
 import Aens from './aens'
 
